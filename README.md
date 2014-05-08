@@ -24,6 +24,7 @@ Accessing the API is fairly straightforward. For the initial (current) implement
 - Show a specific Food Item: `/food_items/:food_item_id`
     - Note here that we have to access it directly, not through the Food Group > Food Items sub-index.
 - Index of all Nutritional Contents for a given Food Item: `/food_items/:food_item_id/nutritional_contents`
+- Index of common measurements (Weights) for a given Food Item: `/food_items/:food_item_id/weights`
 - Index of all Nutrients: `/nutrients`
 - Show a specific Nutrient: `/nutrients/:nutrient_id`
 
@@ -43,7 +44,9 @@ When you request the Nutritional Contents of a Food Item (or request a single on
 
 Note that this gives an `amount_per_100g` but *doesn't give the unit that it's measured in*. However, you can get this by pulling up the individual Nutrient or the full index of all Nutrients. For the single-page app, it might be wise to load this anyway, since you will need it to show a tally of how much of a given Nutrient is accounted for.
 
-In the Javascript, you can keep a tally of each Nutrient's amount used. When a Food Item is added to your recipe, iterate through the Nutritional Contents for the Food Item and add the `amount_per_100g` to the appropriate Nutrient tally.
+In the Javascript, you can keep a tally of each Nutrient's amount used. When a Food Item is added to a user's recipe, iterate through the Nutritional Contents for the Food Item and add the `amount_per_100g` to the appropriate Nutrient tally.
+
+When the user selects a Food Item to add to their recipe, you should hit the API with a request for the Weights for that Food Item. Allow them to choose between them or input their own weight in grams.
 
 ##Database schema:
 
@@ -54,10 +57,17 @@ In the Javascript, you can keep a tally of each Nutrient's amount used. When a F
 
 - Food Item
     - has many Nutritional Contents
+    - has many Weights
     - belongs to Food Group
     - name
     - USDA id
     - description
+
+- Weight
+    - belongs to Food Item
+    - unit multiplier
+    - unit
+    - weight in grams
 
 - Nutrient
     - has many Nutritional Contents
