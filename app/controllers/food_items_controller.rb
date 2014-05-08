@@ -1,6 +1,10 @@
 class FoodItemsController < ApplicationController
   def index
-    @food_items = FoodItem.all
+    if params.has_key? :food_group_id
+      @food_items = FoodGroup.find(params[:food_group_id]).food_items
+    else
+      @food_items = FoodItem.all
+    end
   end
 
   def show
