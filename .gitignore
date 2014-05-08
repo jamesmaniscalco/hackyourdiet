@@ -13,6 +13,8 @@ pickle-email-*.html
 config/initializers/secret_token.rb
 config/secrets.yml
 
+/usda_source/*.txt
+
 ## Environment normalisation:
 /.bundle
 /vendor/bundle
