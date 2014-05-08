@@ -6,5 +6,7 @@ Hackyourdiet::Application.routes.draw do
 
   resources :food_items, only: [:index, :show]
 
+  resources :nutrients, only: [:index, :show]
+
 
 end
