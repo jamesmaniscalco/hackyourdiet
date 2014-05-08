@@ -1,12 +1,15 @@
 Hackyourdiet::Application.routes.draw do
   # API stuff
   resources :food_groups, only: [:index, :show] do
-    resources :food_items, only: [:index, :show]
+    resources :food_items, only: [:index]
   end
 
-  resources :food_items, only: [:index, :show]
+  resources :food_items, only: [:index, :show] do
+    resources :nutritional_contents, only: [:index]
+  end
 
   resources :nutrients, only: [:index, :show]
 
+  resources :nutritional_contents, only: [:show]
 
 end
