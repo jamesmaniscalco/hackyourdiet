@@ -41,6 +41,22 @@ open("#{Rails.root}/usda_source/FOOD_DES.txt", 'r:iso-8859-1:utf-8') do |foodite
   end
 end
 
+# seed the common weights
+open("#{Rails.root}/usda_source/WEIGHT.txt", 'r:iso-8859-1:utf-8') do |weights|
+  weights.read.each_line do |weight|
+    usda_food_id, a1, unit_multiplier, unit, weight_in_grams, a2 = weight.chomp.split("^")
+    food_item = FoodItem.find_by(usda_id: usda_food_id.gsub(/\A[~]+|[~]+\Z/, '').to_i)
+    unit_multiplier = unit_multiplier.gsub(/\A[~]+|[~]+\Z/, '')
+    unit = unit.gsub(/\A[~]+|[~]+\Z/, '')
+    weight_in_grams = weight_in_grams.gsub(/\A[~]+|[~]+\Z/, '').to_f
+    Weight.find_or_initialize_by(food_item: food_item, unit: unit).tap do |wgt|
+      wgt.unit_multiplier = unit_multiplier
+      wgt.unit = unit
+      wgt.weight_in_grams = weight_in_grams
+    end.save!
+  end
+end
+
 # seed the nutrients
 open("#{Rails.root}/usda_source/NUTR_DEF.txt", 'r:iso-8859-1:utf-8') do |nutrients|
   nutrients.read.each_line do |nutrient|
