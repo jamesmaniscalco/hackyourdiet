@@ -3,7 +3,25 @@ hackyourdiet
 
 hack your diet!
 
-##Initialization:
+##Initialization
+
+After cloning the repo, make sure to run `bundle install` to ensure that all relevant gems are installed.
+
+###Seeding the Database
+
+####New, Better Mathod
+
+Below is the way to do this manually. What's better, though, is if you do this:
+
+1. Create a secret key with `rake secret`.
+1. Create a file `config/initializers/secret_token.rb` that reads (substituting the new secret key):
+    `Hackyourdiet::Application.config.secret_key_base = my_secret_key`
+1. Make sure that your `psql` is up-to-date, with a role named 'root' with superuser and login.
+1. Run `rake db:create` to create the database.
+1. Run `rake db:schema:load` to load the schema.
+1. Run `psql hackyourdiet_development < path/to/usda_database_noschema.dump` to pipe the database dump into your local postgres database.
+
+####Manual Method
 
 When initialing an instance of the app, you will need a copy of the USDA nutrient database. Specifically, you need the files named `FD_GROUP.txt`, `FOOD_DES.txt`, `NUT_DATA.txt`, and `NUTR_DEF.txt` to be placed in the `#{Rails.root}/usda_source/` directory.
 
@@ -12,6 +30,10 @@ After placing these, run `rake db:seed` to fill in the database.
 NOTE: this will take a long time, _maybe a few hours_, mostly because the `NUT_DATA.txt` file has **over 600,000 lines**.
 
 The same can be run for updating the database when the USDA releases updated versions of their database.
+
+###Running the Server
+
+Run the rails server with `unicorn`.
 
 ##API access:
 
