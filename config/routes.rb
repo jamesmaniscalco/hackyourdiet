@@ -1,4 +1,6 @@
 Hackyourdiet::Application.routes.draw do
+  root to: "home#index"
+
   # API stuff
   resources :food_groups, only: [:index, :show] do
     resources :food_items, only: :index

@@ -1,1 +1,1 @@
-window.App = angular.module('Menu', ['ngResource']);
+window.App = angular.module('MenuApp', ['apiService']);
